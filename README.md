@@ -38,6 +38,7 @@ Host server
 {
  :wxpusher-token "AT_xxx" ;; nowx使用的token
 }
+```
 
   安装:
 ```sh
@@ -50,7 +51,7 @@ Host server
 ```
 
 ## xsscatch 
- **TODO***
+ **TODO**
 ```clojure 
 {
  :xss-catch-domain "XSS Catcher使用的域名"
