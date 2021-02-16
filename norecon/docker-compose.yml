@@ -1,0 +1,8 @@
+version: '3'
+services:
+  browserless:
+    image: browserless/chrome
+    hostname: browserless
+    container_name: chrome
+    ports:
+      - "127.0.0.1:3666:3000"

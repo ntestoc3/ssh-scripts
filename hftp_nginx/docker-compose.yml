@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  nginx:
+    image: 'docker.io/nginx'
+    ports:
+      - '81:81'
+    restart: 'unless-stopped'
+    volumes:
+      - '/data/html:/data/html'
+      - '/data/hftp_nginx/conf.d:/etc/nginx/conf.d'

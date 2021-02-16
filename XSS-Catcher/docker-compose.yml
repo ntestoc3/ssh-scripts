@@ -1,0 +1,51 @@
+version: '3.3'
+services:
+  db:
+    image: 'postgres:latest'
+    restart: 'unless-stopped'
+    environment:
+      POSTGRES_PASSWORD: 'FvzZ0a1mxfWWRp9gAeml'
+      POSTGRES_USER: 'user'
+      POSTGRES_DB: 'xss'
+    volumes:
+      - 'xss-db:/var/lib/postgresql/data'
+
+  backend: 
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile.backend'
+    depends_on:
+      - "db"
+    restart: 'unless-stopped'
+    expose:
+      - "8080"
+    environment:
+      DATABASE_URL: 'postgresql://user:FvzZ0a1mxfWWRp9gAeml@db/xss'
+    command: [ "./wait-for-it.sh", "-t", "0", "db:5432", "--", "./startup.sh" ]
+
+  frontend:
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile.frontend'
+    depends_on: 
+      - 'backend'
+    expose:
+        - "80"
+    restart: 'unless-stopped'
+    command: [ "/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+
+  nginx:
+    image: 'docker.io/nginx'
+    depends_on:
+      - 'frontend'
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: 'unless-stopped'
+    volumes:
+      - '/data/html:/data/html'
+      - '/data/XSS-Catcher/conf.d:/etc/nginx/conf.d'
+
+volumes: 
+  xss-db:
+

@@ -1,0 +1,15 @@
+[Unit]
+Description=Burp Collaborator Server Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar /data/burp/burp.jar --collaborator-server --collaborator-config=/data/burp/collaborator.conf
+Restart=on-failure
+
+# Configures the time to wait before service is stopped forcefully.
+TimeoutStopSec=300
+
+[Install]
+WantedBy=multi-user.target

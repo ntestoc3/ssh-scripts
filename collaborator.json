@@ -1,0 +1,58 @@
+{% safe %}{
+    "serverDomain" : {{ domain|json }},
+    "workerThreads" : 10,
+    "eventCapture": {
+        "localAddress" : {{ local-ips|json }},
+        "publicAddress" : {{ public-ip|json }},
+        "http": {
+            "ports" : 80
+        },
+        "https": {
+            "ports" : 443
+        },
+        "smtp": {
+            "ports" : [25, 587]
+        },
+        "smtps": {
+            "ports" : 465
+        },
+        "ssl": {
+            "certificateFiles" : [
+                "/data/burp/keys/privkey.pem",
+                "/data/burp/keys/cert.pem",
+                "/data/burp/keys/fullchain.pem"
+            ]
+        }
+    },
+    "polling" : {
+        "localAddress" :  {{ local-ips|json }},
+        "publicAddress" :  {{ public-ip|json }},
+        "http": {
+            "port" : 19090
+        },
+        "https": {
+            "port" : 19443
+        },
+        "ssl": {
+            "certificateFiles" : [
+                "/data/burp/keys/privkey.pem",
+                "/data/burp/keys/cert.pem",
+                "/data/burp/keys/fullchain.pem"
+            ]
+        }
+    },
+    "metrics": {
+        "path" : "{{ metric-path }}",
+        "addressWhitelist" : ["0.0.0.0/1"]
+    },
+    "dns": {
+        "interfaces" : [{
+            "name": "ns.{{ domain }}",
+            "localAddress": {{ local-ips|json }},
+            "publicAddress": {{ public-ip|json }}
+        }],
+        "ports" : 53
+    },
+    "logLevel" : "INFO"
+}
+{% endsafe %}
