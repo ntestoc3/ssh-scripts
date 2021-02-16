@@ -58,7 +58,9 @@
 (defn reconnect!
   []
   (empty!)
-  (push-ssh! (get default-config (:default-ssh-server conf))))
+  (when-let [server (some->> (:default-ssh-server conf)
+                             (get default-config))]
+    (push-ssh! server)))
 
 (defn exist-cmd?
   [cmd]

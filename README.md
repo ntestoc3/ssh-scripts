@@ -1,5 +1,8 @@
 
-自用的spire脚本,用于自动配置ssh服务器
+# 简介
+  用于自动配置ssh服务器
+  
+  注意: **目前仅支持ubuntu 系统**
 
 # 使用方法
 -  安装[spire](https://github.com/epiccastle/spire)
@@ -20,6 +23,8 @@ Host server
   IdentityFile ~/.ssh/id_rsa
 ```
   使用私钥登录，服务器配置名为:server
+  
+  如果不指定:default-ssh-server,则所有安装操作针对的都是本机。
   
 -  clone本项目:
 ```sh 
