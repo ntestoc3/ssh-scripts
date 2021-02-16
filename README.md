@@ -10,8 +10,8 @@
  :default-ssh-server :server ;;默认的ssh服务器配置名,必须配置
 }
 ```
-  :default-ssh-server 用于指定要操作的ssh服务器名，此配置从 ~/.ssh/config文件中读取。
-  比如下面的~/.ssh/config配置:
+  :default-ssh-server 用于指定要操作的ssh服务器名，此配置从\~/.ssh/config文件中读取。
+  比如下面的\~/.ssh/config配置:
 ```conf 
 Host server
   HostName server.ip
@@ -33,12 +33,13 @@ Host server
   各个脚本相关的配置与要求见对应部分
   
 ## norecon 
+ 安装norecon与所有依赖工具，和browserless docker的配置，需要提供的配置项:
 ```clojure 
 {
  :wxpusher-token "AT_xxx" ;; nowx使用的token
 }
-``**
-  安装所有依赖工具
+
+  安装:
 ```sh
 ./norecon.clj 
 ```
@@ -49,7 +50,7 @@ Host server
 ```
 
 ## xsscatch 
- **TODO*
+ **TODO***
 ```clojure 
 {
  :xss-catch-domain "XSS Catcher使用的域名"

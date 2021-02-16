@@ -7,6 +7,9 @@
 
 (defn setup-norecon-all
   []
+  (install-and-start-docker)
+  (make-data-dir)
+
   (setup-port-scanners)
 
   (setup-amass)
