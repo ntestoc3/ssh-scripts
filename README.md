@@ -30,6 +30,29 @@ Host server
 
 -  执行对应的脚本文件,对:default-ssh-server指定的服务器进行配置
 
+  下面的所有配置项都保存在\~/.private_conf.edn文件中,完整配置如下:
+```clojure
+{
+ ;; 默认操作的服务器项
+ :default-ssh-server :server
+
+ ;; burp collaborator配置
+ :email "my@test.com"
+ :burp-domain "colla.xyz"
+ :burp-metric-path "32i42OHIOUFE"
+
+ ;; norecon nowx配置
+ :wxpusher-token "AT_xxx"
+
+ ;; hftp配置
+ :hftp-domain "www.hftp.xxx"
+ :hftp-port 81
+  
+ ;; XSS-Catch配置
+ :xss-catch-domain "www.xss.xxx"
+ }
+```
+
   各个脚本相关的配置与要求见对应部分
   
 ## norecon 
@@ -50,16 +73,38 @@ Host server
 ./norecon.clj info
 ```
 
-## xsscatch 
- **TODO**
+## XSS Catcher
+  安装并配置XSS Catcher, 添加如下配置:
 ```clojure 
 {
  :xss-catch-domain "XSS Catcher使用的域名"
 }
 ```
+  保存域名的证书为\~/keys/domain.crt, 私钥保存为\~/keys/domain.key.
+
+  安装:
+```sh 
+./xsscatch.clj
+```
+   支持的参数:
+   - 创建并启动(默认): up
+   - 重新创建: recreate
+   - 同docker-compose: start stop logs ps
 
 ## burp collaborator server
- **TODO**
+  配置私有的burp collaborator服务器，手动步骤参考文章[self-hosted-burp-collaborator-with-custom-domain](https://teamrot.fi/self-hosted-burp-collaborator-with-custom-domain/)
+  
+- 购买云主机，需要开放的端口:53, 80, 443, 25, 587, 465, 19090, 19443
+
+  这些端口不能被占用。 
+
+  并且云主机的公网ip必须有对应的主机名可以解析(域名的ns记录不能设置成ip), 
+
+  GoDaddy可以直接配置，参考上面的文章。
+  
+- 购买域名, 修改域名的ns指向
+
+- 添加配置项到 ~/.private_conf.edn
 ```clojure 
 {
  :email "my@test.com" ;;用于注册证书时使用(burp collaborator)
@@ -67,6 +112,15 @@ Host server
  :burp-metric-path "32i42OHIOUFE" ;; burp collaborator metric路径
 }
 ```
+
+- 安装并启动:
+```sh 
+./burp_collaborator.clj 
+```
+   支持的参数:
+   - 创建并启动(默认): up
+   - 同systemctl: stop start status restart
+
 ## hftp
    简单的http服务器，用于提供文件下载,需要提供配置项:
 ```clojure 
@@ -80,7 +134,7 @@ Host server
 spire hftp.clj up
 ```
    支持的参数:
-   - 创建并启动: up
+   - 创建并启动(默认): up
    - 重新创建: recreate
    - 同docker-compose: start stop logs ps
 

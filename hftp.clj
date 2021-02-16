@@ -29,7 +29,7 @@
 (when (= *file*
          (first *command-line-args*))
   (let [action (or (second *command-line-args*)
-                   "start")]
+                   "up")]
     (reconnect!)
     (cond
       (= "up" action)

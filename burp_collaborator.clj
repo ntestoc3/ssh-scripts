@@ -40,43 +40,23 @@
   (sudo
    (upload {:src "./collaborator.service"
             :dest "/etc/systemd/system/collaborator.service"})
-   (shell {:cmd "systemctl start collaborator"})))
-
-(defn stop-burp-server
-  []
-  (sudo
-   (shell {:cmd "systemctl stop collaborator"})))
-
-(defn restart-burp-server
-  []
-  (sudo
-   (shell {:cmd "systemctl restart collaborator"})))
-
-(defn status-burp-server
-  []
-  (sudo
-   (shell {:cmd "systemctl status collaborator"})))
+   (systemctl "collaborator" "start")))
 
 (when (= *file*
          (first *command-line-args*))
   (let [action (or (second *command-line-args*)
-                   "start")]
+                   "up")]
     (reconnect!)
-    (case action
-      "stop"
-      (stop-burp-server)
-
-      "restart"
-      (restart-burp-server)
-
-      "start"
+    (cond
+      (= "up" action)
       (if-let [domain (:burp-domain conf)]
         (do
           (println "setup burp server domain:" domain)
           (setup-burp-server (:burp-domain conf)))
         (println "not set burp domain in ~/.private_conf.edn"))
 
-      "status"
-      (status-burp-server)
+      (#{"stop" "start" "status" "restart"} action)
+      (systemctl "collaborator" action)
 
-      (println "unknown action:" action))))
+      :else
+      (println "unsupport action:" action))))

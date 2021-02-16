@@ -325,6 +325,14 @@
                      (str/join " " args))
            :dir target})))
 
+
+(defn systemctl
+  [target action]
+  (sudo
+   (shell {:cmd (format "systemctl %s %s"
+                        action
+                        target)})))
+
 ;;;;;;;;;; str utils
 (defn rand-string
   "生成长度为`n`的随机字符串"
