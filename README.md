@@ -148,4 +148,11 @@ spire hftp.clj up
 ```sh
 ./mkswap.clj 8G
 ```
-  
+
+## tmux 
+  在tmux中执行命令,例如:
+```sh 
+./tmux.clj pwd 'cd /data/project' 'nowx test_$?'
+```
+  会打开session名为spire的tmux会话,并顺序执行3条命令。
+  注意:要保证默认shell为bash
