@@ -144,9 +144,9 @@
 
 (defn setup-norecon
   []
-  (when-not (exist-cmd? "norecon")
-    (install-pip3)
-    (shell {:cmd "pip3 install norecon"})
+  (when-not (= (get-version :norecon)
+               (get-pypi-project-last-version "norecon"))
+    (install-pip3-lib "norecon")
 
     (upload {:src "./norecon/"
              :recurse true

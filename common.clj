@@ -114,7 +114,7 @@
 (defn install-pip3-lib
   [lib]
   (install-pip3)
-  (shell {:cmd (format "pip3 install %s"
+  (shell {:cmd (format "pip3 install %s -U"
                        lib)}))
 
 (defn pip3-lib-info
@@ -131,6 +131,17 @@
          (into {}))
     (catch Exception _
       nil)))
+
+(defn get-pypi-project-info
+  [project]
+  (-> (format "https://www.pypi.org/pypi/%s/json" project)
+      (slurp)
+      (json/read-str :key-fn keyword)))
+
+(defn get-pypi-project-last-version
+  [project]
+  (-> (get-pypi-project-info project)
+      (get-in [:info :version])))
 
 (defn parse-version
   [s]
