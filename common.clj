@@ -71,7 +71,7 @@
 
 (defn exist-file?
   [path]
-  (try (stat path)
+  (try (shell {:cmd (str "ls " path)})
        true
        (catch Exception _
          false)))

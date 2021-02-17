@@ -143,4 +143,9 @@ spire hftp.clj up
    - 重新创建: recreate
    - 同docker-compose: start stop logs ps
 
-   
+## mkswap
+  创建swap分区,可以指定分区大小，默认为4G:
+```sh
+./mkswap.clj 8G
+```
+  
