@@ -60,8 +60,21 @@ Host server
 
   各个脚本相关的配置与要求见对应部分
   
-## norecon 
- 安装norecon与所有依赖工具，和browserless docker的配置，需要提供的配置项:
+## bounty_tools
+ 安装bug bounty相关工具,包含:
+ - amass
+ - aquatone
+ - arjun 
+ - ffuf
+ - findomain
+ - gau 
+ - masscan
+ - nmap 
+ - norecon 
+ - nuclei 
+ - subfinder
+ 
+ 需要提供配置项:
 ```clojure 
 {
  :wxpusher-token "AT_xxx" ;; nowx使用的token
@@ -70,12 +83,12 @@ Host server
 
   安装:
 ```sh
-./norecon.clj 
+./bounty_tools.clj
 ```
    
   显示已安装工具的版本号:
 ```sh 
-./norecon.clj info
+./bounty_tools.clj info
 ```
 
 ## XSS Catcher

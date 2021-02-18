@@ -27,6 +27,10 @@
 
   (setup-nuclei)
 
+  (setup-subfinder)
+
+  (setup-gau)
+
   )
 
 

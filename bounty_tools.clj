@@ -65,6 +65,7 @@
       (download-github-lastest-release ffuf-project-name
                                        (format "ffuf_%s_linux_amd64.tar.gz" (:full last-ver))
                                        "/tmp/ffuf.tgz")
+      (shell {:cmd "rm -rf /data/ffuf"})
       (mkdir {:path "/data/ffuf"})
       (shell {:cmd "tar xzf /tmp/ffuf.tgz -C /data/ffuf"})
       (add-local-bin "/data/ffuf/ffuf" "ffuf")
@@ -189,12 +190,134 @@
                                        (format "nuclei_%s_linux_amd64.tar.gz"
                                                (:full last-ver))
                                        "/tmp/nuclei.tgz")
-      (mkdir {:path "/data/nuclei"})
       (shell {:cmd "rm -rf /data/nuclei"})
+      (mkdir {:path "/data/nuclei"})
       (shell {:cmd "tar xzf /tmp/nuclei.tgz -C /data/nuclei"})
       (add-local-bin "/data/nuclei/nuclei" "nuclei")
       (println "setup nuclei" (-> (get-version :nuclei)
                                   (:full))
                "over!"))))
+
+;;;;; subfinder
+(def subfinder-project-name "projectdiscovery/subfinder")
+(defmethod get-version :subfinder
+  [_]
+  (when (exist-cmd? "subfinder")
+    (-> (shell {:cmd "subfinder -version"})
+        :err
+        parse-version)))
+
+(defn setup-subfinder
+  []
+  (let [last-ver (get-github-lastest-version subfinder-project-name)]
+    (when-not (= last-ver (get-version :subfinder))
+      (download-github-lastest-release subfinder-project-name
+                                       (format "subfinder_%s_linux_amd64.tar.gz"
+                                               (:full last-ver))
+                                       "/tmp/subfinder.tgz")
+      (shell {:cmd "rm -rf /data/subfinder"})
+      (mkdir {:path "/data/subfinder"})
+      (shell {:cmd "tar xzf /tmp/subfinder.tgz -C /data/subfinder"})
+      (add-local-bin "/data/subfinder/subfinder" "subfinder")
+      (println "setup subfinder" (-> (get-version :subfinder)
+                                  (:full))
+               "over!"))))
+
+;;;;; gau
+(def gau-project-name "lc/gau")
+(defmethod get-version :gau
+  [_]
+  (when (exist-cmd? "gau")
+    (-> (shell {:cmd "gau -version"})
+        :out
+        parse-version)))
+
+(defn setup-gau
+  []
+  (let [last-ver (get-github-lastest-version gau-project-name)]
+    (when-not (= last-ver (get-version :gau))
+      (download-github-lastest-release gau-project-name
+                                       (format "gau_%s_linux_amd64.tar.gz"
+                                               (:full last-ver))
+                                       "/tmp/gau.tgz")
+      (shell {:cmd "rm -rf /data/gau"})
+      (mkdir {:path "/data/gau"})
+      (shell {:cmd "tar xzf /tmp/gau.tgz -C /data/gau"})
+      (add-local-bin "/data/gau/gau" "gau")
+      (println "setup gau" (-> (get-version :gau)
+                                     (:full))
+               "over!"))))
+
+;;;;;;;;;;; cli setup
+(load-file "./port_scanners.clj")
+
+(defn setup-bounty-tools
+  []
+  (install-and-start-docker)
+  (make-data-dir)
+
+  (setup-port-scanners)
+
+  (setup-amass)
+
+  (setup-ffuf)
+
+  (setup-aquatone)
+
+  (setup-findomain)
+
+  (setup-norecon)
+
+  (setup-nuclei)
+
+  (setup-subfinder)
+
+  (setup-gau)
+
+  (setup-arjun)
+  )
+
+(defn print-version-info
+  []
+  (let [nmap-version (:full (get-version :nmap))
+        masscan-version (:full (get-version :masscan))
+        amass-version (:full (get-version :amass))
+        ffuf-version (:full (get-version :ffuf))
+        aquatone-version (:full (get-version :aquatone))
+        findomain-version (:full (get-version :findomain))
+        norecon-version (:full (get-version :norecon))
+        nuclei-version (:full (get-version :nuclei))
+        subfinder-version (:full (get-version :subfinder))
+        gau-version (:full (get-version :gau))
+        arjun-version (:full (get-version :arjun))
+        ]
+    (flush)
+    (println "amass version:" amass-version)
+    (println "aquatone version:" aquatone-version)
+    (println "arjun version:" arjun-version)
+    (println "ffuf version:" ffuf-version)
+    (println "findomain version:" findomain-version)
+    (println "gau version:" gau-version)
+    (println "masscan version:" masscan-version)
+    (println "nmap version:" nmap-version)
+    (println "norecon version:" norecon-version)
+    (println "nuclei version:" nuclei-version)
+    (println "subfinder version:" subfinder-version)
+    ))
+
+(when (= *file*
+         (first *command-line-args*))
+  (let [action (or (second *command-line-args*)
+                   "setup")]
+    (reconnect!)
+    (case action
+      "setup"
+      (setup-bounty-tools)
+
+      "info"
+      (print-version-info)
+
+      (println "unsupport action:" action))))
+
 
 

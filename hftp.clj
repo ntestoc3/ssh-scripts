@@ -15,6 +15,8 @@
 
   (install-and-start-docker)
 
+  (mkdir {:path "/data/html"})
+
   (mkdir {:path (str hftp-path "/conf.d")})
   ;; 修改docker-compose配置
   (upload {:content (selmer "./hftp_nginx/default.conf"
