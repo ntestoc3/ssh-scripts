@@ -9,9 +9,7 @@
 (defn setup-burp-server
   "polling server端口开放19443"
   [domain]
-  (sudo
-   (mkdir {:path "/home/burp"
-           :mode 0700}))
+  (install-java)
 
   (let [metric-path (or (:burp-metric-path conf)
                         (rand-string 32)) ]
