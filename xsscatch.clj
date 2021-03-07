@@ -26,9 +26,9 @@
   (upload {:content (selmer "./XSS-Catcher/default.conf"
                             {:domain domain})
            :dest (str xss-catch-path "/conf.d/default.conf")})
-  (upload {:src "~/keys/domain.crt"
+  (upload {:src (expand-home "~/keys/domain.crt")
            :dest (str xss-catch-path "/conf.d/domain.crt")})
-  (upload {:src "~/keys/domain.key"
+  (upload {:src (expand-home "~/keys/domain.key")
            :dest (str xss-catch-path "/conf.d/domain.key")})
 
   ;; 启动docker
