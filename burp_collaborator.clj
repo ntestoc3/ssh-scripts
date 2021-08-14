@@ -3,8 +3,6 @@
 (load-file "common.clj")
 
 ;;;;; burp collaborator server
-(def public-ip (-> (get-fact)
-                   (get-in [:ssh-config :hostname])))
 
 (defn setup-burp-server
   "polling server端口开放19443"
@@ -12,7 +10,9 @@
   (install-java)
 
   (let [metric-path (or (:burp-metric-path conf)
-                        (rand-string 32)) ]
+                        (rand-string 32))
+        public-ip (-> (get-fact)
+                      (get-in [:ssh-config :hostname]))]
     (println "burp collaborator metric path:" metric-path)
     (upload {:content (selmer "collaborator.json"
                               {:domain domain
